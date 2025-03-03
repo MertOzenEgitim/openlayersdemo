@@ -81,7 +81,7 @@ ol.control.Attribution: Harita sağlayıcısı bilgilerini ekleme
 
 ## 2-İlk Haritanın Oluşturulması
 
-OpenLayers’ı CDN veya npm ile projeye ekleme
-Temel harita gösterimi
-Map ve View nesnelerinin yapılandırılması
-Varsayılan katmanlar (OSM)
+* OpenLayers’ı CDN veya npm ile projeye ekleme
+* Temel harita gösterimi
+* Map ve View nesnelerinin yapılandırılması
+* Varsayılan katmanlar (OSM)
