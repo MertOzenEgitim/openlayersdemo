@@ -85,3 +85,13 @@ ol.control.Attribution: Harita sağlayıcısı bilgilerini ekleme
 * Temel harita gösterimi
 * Map ve View nesnelerinin yapılandırılması
 * Varsayılan katmanlar (OSM)
+
+## 3-Katmanlar (Layers)
+* Tile Katmanları
+* * TileLayer ve XYZ kaynakları ile harita sağlayıcılarını kullanma (Ör: OSM, Stamen, Google Maps).
+* * -> https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}.png
+* * Katman değiştirme/yönetme
+* Vektör Katmanları
+* * VectorLayer ve VectorSource kavramları.
+* * GeoJSON verilerini haritada gösterme.
+* * -> https://geojson.io/#map=10.27/40.9444/29.2071
