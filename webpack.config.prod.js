@@ -5,6 +5,7 @@ const MiniCssExtractPlugin=require('mini-css-extract-plugin');
 const webpack  = require('webpack');
 const TerserPlugin=require("terser-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports={
     entry:'./src/js/main.js',
@@ -109,6 +110,11 @@ module.exports={
         new MiniCssExtractPlugin({filename:'[name].[contenthash].css'}),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV':JSON.stringify('production')
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'src/data', to: 'data' }
+            ]
         })
     ],
     mode:'production',
