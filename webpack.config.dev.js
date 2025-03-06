@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin}=require('clean-webpack-plugin');
 const MiniCssExtractPlugin=require('mini-css-extract-plugin');
 const webpack  = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports={
     entry:'./src/js/main.js',
@@ -82,6 +83,11 @@ module.exports={
         new MiniCssExtractPlugin({filename:'[name].[hash:7].css'}),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV':JSON.stringify('development')
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'src/data', to: 'data' }
+            ]
         })
     ],
     devtool:'source-map',

@@ -5,3 +5,9 @@ body{
     width: 100%;
     height: 100vh;
 }
+#layerSelect{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 1;
+}
