@@ -95,3 +95,9 @@ ol.control.Attribution: Harita sağlayıcısı bilgilerini ekleme
 * * VectorLayer ve VectorSource kavramları.
 * * GeoJSON verilerini haritada gösterme.
 * * -> https://geojson.io/#map=10.27/40.9444/29.2071
+
+## 4-View (Görünüm)
+* Merkez Koordinatı
+* Zoom Seviyesi
+* Döndürme
+* Projeksiyon Sistemleri(EPSG:4326 vs EPSG:3857)
