@@ -17,8 +17,12 @@ document.addEventListener("DOMContentLoaded",async()=>{
         center:fromLonLat([28.9784,41.0082]),
         zoom:10,
         maxZoom:18,
-        minZoom:3
-    })
+        minZoom:3,
+        rotation:(45*Math.PI)/180,
+        projection:'EPSG:3857'
+    });
+
+    //radyan=(derece*Math.PI)/180
 
     const stamenLayer=new TileLayer({
         source:new XYZ({
