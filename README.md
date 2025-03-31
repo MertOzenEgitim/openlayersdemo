@@ -101,3 +101,10 @@ ol.control.Attribution: Harita sağlayıcısı bilgilerini ekleme
 * Zoom Seviyesi
 * Döndürme
 * Projeksiyon Sistemleri(EPSG:4326 vs EPSG:3857)
+
+## 5-Etkileşimler (Interactions)
+* Özel Etkileşimler Oluşturma
+* * Kullanıcı tıklamalarıyla koordinat alma
+* * Çizim araçları ekleme (Polygon, Line, Point,Circle)
+* Çizimleri geojson olarak alma
+* Örnek Uygulama
