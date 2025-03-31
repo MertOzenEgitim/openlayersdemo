@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenLayers Project</title>
 </head>
-<body>
-    <select name="layerSelect" id="layerSelect">
-        <option value="osm">OpenStreetMap</option>
-        <option value="stamen">Stamen Terrain</option>
-    </select>
+<body>   
     <div id="map"></div>
+    <select name="type" id="type">
+        <option value="None">None</option>
+        <option value="Point">Point</option>
+        <option value="LineString">LineString</option>
+        <option value="Polygon">Polygon</option>
+        <option value="Circle">Circle</option>        
+    </select>
+    <button id="undoDraw">Undo</button>
+    <button id="clearDraw">Clear</button>
 </body>
 </html>

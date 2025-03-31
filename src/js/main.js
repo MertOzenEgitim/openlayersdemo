@@ -3,84 +3,158 @@ import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
-import { OSM, XYZ } from 'ol/source';
-import { fromLonLat } from 'ol/proj';
+import { OSM } from 'ol/source';
+import { fromLonLat, toLonLat } from 'ol/proj';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import {Style,Circle,Fill,Stroke} from 'ol/style';
 import { Polygon } from 'ol/geom';
+import Draw from 'ol/interaction/Draw';
 
 document.addEventListener("DOMContentLoaded",async()=>{
+
+    // const view=new View({
+    //     center:fromLonLat([28.9784,41.0082]),
+    //     zoom:10,
+    //     maxZoom:18,
+    //     minZoom:3,
+    //     projection:'EPSG:3857'
+    // });
+
+    // const osmLayer= new TileLayer({
+    //     source:new OSM()
+    // });
+
+    // const map=new Map({
+    //     target:'map',
+    //     layers:[
+    //         osmLayer
+    //     ],
+    //     view:view
+    // });  
+    
+    // map.on('singleclick',function(e){
+    //     const coordinate=e.coordinate;
+    //     console.log(toLonLat(coordinate));
+    // });
+
+    // const drawSource=new VectorSource();
+
+    // // const drawLayer=new VectorLayer({
+    // //     source:drawSource,
+    // //     style:new Style({
+    // //         image:new Circle({
+    // //             radius:7,
+    // //             fill:new Fill({color:'red'}),
+    // //             stroke:new Stroke({color:'black',width:2})
+    // //         })
+    // //     })
+    // // });
+
+    // const drawLayer=new VectorLayer({
+    //     source:drawSource,
+    //     style:new Style({
+    //        stroke:new Stroke({
+    //         color:'blue',
+    //         width:2
+    //        })
+    //     })
+    // });
+
+    // map.addLayer(drawLayer);
+
+    // const drawLine=new Draw({
+    //     source:drawSource,
+    //     type:'LineString'
+    // });
+
+    // // const drawLine=new Draw({
+    // //     source:drawSource,
+    // //     type:'Polygon'
+    // // });
+
+    // // const drawLine=new Draw({
+    // //     source:drawSource,
+    // //     type:'Circle'
+    // // });
+
+    // drawLine.on('drawend',function(e){
+    //     const feature=e.feature;
+    //     const geojsonFormat=new GeoJSON();
+
+    //     const geojsonStr=geojsonFormat.writeFeature(feature);
+    //     console.log("GeoJSON (EPSG:3857):",geojsonStr);
+
+    //     const geometry=feature.getGeometry();
+    //     const coordinates=geometry.getCoordinates().map(coord=>toLonLat(coord));
+
+    //     const geojson4326={
+    //         type:"Feature",
+    //         properties:feature.getProperties(),
+    //         geometry:{
+    //             type:geometry.getType(),
+    //             coordinates:coordinates
+    //         }
+    //     };
+
+    //     console.log('GeoJSON (EPSG:4326):',JSON.stringify(geojson4326));
+    // });
+
+    // map.addInteraction(drawLine);
+
+    //-------------Uygulama---------------------------------
 
     const view=new View({
         center:fromLonLat([28.9784,41.0082]),
         zoom:10,
         maxZoom:18,
         minZoom:3,
-        rotation:(45*Math.PI)/180,
         projection:'EPSG:3857'
     });
 
-    //radyan=(derece*Math.PI)/180
-
-    const stamenLayer=new TileLayer({
-        source:new XYZ({
-            url:'https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}.png'
-        })
-    })
-
     const osmLayer= new TileLayer({
         source:new OSM()
-    });
+    });     
 
+    const source=new VectorSource();
+    const vectorLayer=new VectorLayer({
+        source:source
+    });
+    
     const map=new Map({
         target:'map',
         layers:[
-            stamenLayer,
-            osmLayer
+            osmLayer,
+            vectorLayer
         ],
         view:view
-    });
-
-    //map.removeLayer(stamenLayer);
-    //const layers=map.getLayers().getArray();
-    //console.log(layers);
-    //stamenLayer.setVisible(false);
-    //stamenLayer.setVisible(true);
-    //osmLayer.setVisible(true);
-    //osmLayer.setVisible(false);
-    
-    document.getElementById("layerSelect").addEventListener('change',(event)=>{
-        const selectedLayer=event.target.value;
-
-        osmLayer.setVisible(selectedLayer==='osm');
-        stamenLayer.setVisible(selectedLayer==='stamen');
-    });
-
-    const vectorLayer=new VectorLayer({
-        source:new VectorSource({
-            url:'data/points.geojson',
-            format:new GeoJSON()
-        }),
-        style: function (feature) {
-            const geometryType = feature.getGeometry().getType();
-            if (geometryType === 'Point') {
-                return new Style({
-                    image: new Circle({
-                        radius: 6,
-                        fill: new Fill({ color: 'red' }),
-                        stroke: new Stroke({ color: 'black', width: 2 }),
-                    }),
-                });
-            } else if (geometryType === 'Polygon') {
-                return new Style({
-                    fill: new Fill({ color: 'rgba(0, 0, 255, 0.5)' }), 
-                    stroke: new Stroke({ color: 'blue', width: 2 }), 
-                });
-            }
+    }); 
+    const typeSelect=document.getElementById('type');
+    const undoDrawButton=document.getElementById('undoDraw');
+    const clearDrawButton=document.getElementById('clearDraw');
+    let draw;
+    typeSelect.onchange=function(){
+        const value=typeSelect.value;
+        map.removeInteraction(draw);
+        if(value!=='None'){
+            draw=new Draw({
+                source:source,
+                type:typeSelect.value
+            })
+            map.addInteraction(draw);
         }
-    })
+    }    
+    undoDrawButton.addEventListener('click',function(){
+        const features=source.getFeatures();
+        if(features.length>0){
+            const lastFeature=features[features.length-1];
+            source.removeFeature(lastFeature);
+        }
+    });
+    clearDrawButton.addEventListener('click',function(){
+        source.clear();        
+    });
 
-    map.addLayer(vectorLayer);
 });
+
